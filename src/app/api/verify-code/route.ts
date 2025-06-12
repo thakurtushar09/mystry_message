@@ -1,52 +1,51 @@
 import dbConnect from "@/lib/dbConnect";
 import UserModel from "@/model/User";
 
-
-
-export async function POST(request:Request){
+export async function POST(request: Request) {
+  try {
     await dbConnect();
-    const {username,code} = request.json();
+
+    const { username, code } = await request.json();
     const decodedUsername = decodeURIComponent(username);
-    const user=await UserModel.findOne({username:decodedUsername});
+    const user = await UserModel.findOne({ username: decodedUsername });
 
-    if(!user){
-        return Response.json({
-                success:false,
-                message:"User not found"
-            },{status:400})
+    if (!user) {
+      return Response.json({
+        success: false,
+        message: "User not found",
+      }, { status: 400 });
     }
 
-    const isCodeValid = user.verifyCode===code;
-    const isCodeNotExpire = new Date(user.verifyCodeExpiry) > new Date();
+    const isCodeValid = user.verifyCode === code;
+    const isCodeNotExpired = new Date(user.verifyCodeExpiry) > new Date();
 
-    if(isCodeValid && isCodeNotExpire){
-        user.isVerified = true;
-        user.save();
-        return Response.json({
-                success:true,
-                message:"User verified successfully"
-            },{status:200})
-    } else if(!isCodeValid) {
-        return Response.json({
-                success:false,
-                message:"Verify code is incorrect"
-            },{status:400})
-    } else{
-        return Response.json({
-                success:false,
-                message:"code expired"
-            },{status:400})
+    if (isCodeValid && isCodeNotExpired) {
+      user.isVerified = true;
+      await user.save();
+
+      return Response.json({
+        success: true,
+        message: "User verified successfully",
+      }, { status: 200 });
     }
 
-
-    try {
-        
-    } catch (error) {
-        console.log("Error verifying user",error);
-        return Response.json({
-                success:false,
-                message:"Error in verification"
-            },{status:400})
-        
+    if (!isCodeValid) {
+      return Response.json({
+        success: false,
+        message: "Verification code is incorrect",
+      }, { status: 400 });
     }
+
+    return Response.json({
+      success: false,
+      message: "Verification code has expired",
+    }, { status: 400 });
+
+  } catch (error) {
+    console.error("Error verifying user:", error);
+    return Response.json({
+      success: false,
+      message: "Internal Server Error during verification",
+    }, { status: 500 });
+  }
 }
