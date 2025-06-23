@@ -76,80 +76,93 @@ const SignupPage = () => {
   };
 
   return (
-    <div className="max-w-md mx-auto mt-10 p-6 border rounded-2xl shadow-md">
-      <h2 className="text-2xl font-bold mb-6 text-center">Create an Account</h2>
+    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-purple-300 to-green-200 px-4 py-8">
+      <div className="max-w-md w-full bg-white/40 backdrop-blur-xl rounded-2xl shadow-2xl p-8 border border-white/50">
 
-      <Form {...form}>
-        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-5">
+        {/* App Title */}
+        <h1 className="text-3xl font-extrabold text-center text-gray-800 mb-2">AnonMessage</h1>
+        <p className="text-sm text-center text-gray-600 mb-6">
+          Create an account to receive anonymous messages
+        </p>
 
-          {/* Username */}
-          <FormField
-            control={form.control}
-            name="username"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Username</FormLabel>
-                <FormControl>
-                  <Input
-                    {...field}
-                    placeholder="Enter a unique username"
-                    onChange={(e) => {
-                      field.onChange(e);
-                      setHasTyped(true);
-                      debouncedCheckUsername(e.target.value);
-                    }}
-                  />
-                </FormControl>
-                <FormDescription>
-                  {hasTyped && (isCheckingUsername ? "Checking..." : usernameMessage)}
-                </FormDescription>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
+        {/* Form */}
+        <Form {...form}>
+          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-5">
 
-          {/* Email */}
-          <FormField
-            control={form.control}
-            name="email"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Email</FormLabel>
-                <FormControl>
-                  <Input {...field} placeholder="you@example.com" type="email" />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
+            {/* Username */}
+            <FormField
+              control={form.control}
+              name="username"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Username</FormLabel>
+                  <FormControl>
+                    <Input
+                      {...field}
+                      placeholder="Enter a unique username"
+                      onChange={(e) => {
+                        field.onChange(e);
+                        setHasTyped(true);
+                        debouncedCheckUsername(e.target.value);
+                      }}
+                    />
+                  </FormControl>
+                  <FormDescription className="text-sm text-gray-500">
+                    {hasTyped && (isCheckingUsername ? "Checking..." : usernameMessage)}
+                  </FormDescription>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
 
-          {/* Password */}
-          <FormField
-            control={form.control}
-            name="password"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Password</FormLabel>
-                <FormControl>
-                  <Input {...field} placeholder="••••••••" type="password" />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
+            {/* Email */}
+            <FormField
+              control={form.control}
+              name="email"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Email</FormLabel>
+                  <FormControl>
+                    <Input {...field} placeholder="you@example.com" type="email" />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
 
-          <Button type="submit" disabled={isCheckingUsername} className="w-full">
-            {isCheckingUsername ? "Creating Account..." : "Signup"}
-          </Button>
-        </form>
-      </Form>
+            {/* Password */}
+            <FormField
+              control={form.control}
+              name="password"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Password</FormLabel>
+                  <FormControl>
+                    <Input {...field} placeholder="••••••••" type="password" />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
 
-      <p className="text-sm text-center mt-4">
-        Already have an account?{" "}
-        <Link href="/login" className="text-blue-600 hover:underline">
-          Login here
-        </Link>
-      </p>
+            {/* Submit */}
+            <Button
+              type="submit"
+              disabled={isCheckingUsername}
+              className="w-full bg-purple-600 hover:bg-purple-700 text-white"
+            >
+              {isCheckingUsername ? "Creating Account..." : "Sign Up"}
+            </Button>
+          </form>
+        </Form>
+
+        <p className="text-sm text-center mt-6 text-gray-700">
+          Already have an account?{" "}
+          <Link href="/sign-in" className="text-blue-600 hover:underline">
+            Log in here
+          </Link>
+        </p>
+      </div>
     </div>
   );
 };
