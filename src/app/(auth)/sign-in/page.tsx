@@ -65,7 +65,6 @@ const SignInPage = () => {
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-5">
 
-            {/* Username or Email */}
             <FormField
               control={form.control}
               name="identifier"
