@@ -10,13 +10,13 @@ export default function Landing() {
   const { status } = useSession();
 
   return (
-    <div className="h-screen w-full bg-gradient-to-br from-purple-300 to-green-200 flex items-center justify-center">
-      <div className="h-[90%] w-[90%] rounded-2xl bg-white/30 backdrop-blur-3xl shadow-2xl">
+    <div className="min-h-screen w-full bg-gradient-to-br from-purple-300 to-green-200 flex items-center justify-center px-4 py-6">
+      <div className="w-full max-w-7xl rounded-2xl bg-white/30 backdrop-blur-3xl shadow-2xl p-6 md:p-10">
         
         {/* Header */}
-        <div className="flex items-center justify-between px-8 py-6">
-          <div className="text-2xl font-bold text-gray-800">LOGO HERE</div>
-          <div className="flex gap-4">
+        <div className="flex flex-col md:flex-row items-center justify-between mb-10 gap-4">
+          <div className="text-2xl font-bold text-gray-800">AnonMessage</div>
+          <div className="flex gap-4 flex-wrap">
             {status === 'authenticated' ? (
               <Button onClick={() => router.push('/u/messages')}>
                 See all Messages
@@ -25,13 +25,13 @@ export default function Landing() {
               <>
                 <button
                   onClick={() => router.push('/sign-in')}
-                  className="px-5 py-2 text-sm font-semibold text-gray-800 bg-white bg-opacity-70 border border-gray-300 rounded-xl shadow-sm hover:bg-opacity-90 hover:shadow-md transition-all duration-200"
+                  className="px-5 py-2 text-sm font-semibold text-gray-800 bg-white bg-opacity-70 border border-gray-300 rounded-xl shadow-sm hover:bg-opacity-90 hover:shadow-md transition-all"
                 >
                   Sign In
                 </button>
                 <button
                   onClick={() => router.push('/sign-up')}
-                  className="px-6 py-2 text-sm font-semibold text-white bg-blue-700 rounded-xl shadow-md hover:bg-blue-800 hover:shadow-lg transition-all duration-200"
+                  className="px-6 py-2 text-sm font-semibold text-white bg-blue-700 rounded-xl shadow-md hover:bg-blue-800 hover:shadow-lg transition-all"
                 >
                   Get Started
                 </button>
@@ -41,21 +41,10 @@ export default function Landing() {
         </div>
 
         {/* Main Section */}
-        <div className="flex items-center justify-between px-10 mt-10">
-          {/* Image Section */}
-          <div>
-            <Image
-              src="/landing-image.png"
-              alt="landing-image"
-              height={500}
-              width={500}
-              className="rounded-xl"
-            />
-          </div>
-
+        <div className="flex flex-col-reverse md:flex-row items-center justify-between gap-10">
           {/* Text Section */}
-          <div className="max-w-xl">
-            <h1 className="text-4xl font-bold text-gray-800 mb-4">
+          <div className="w-full md:w-1/2 text-center md:text-left">
+            <h1 className="text-4xl md:text-5xl font-bold text-gray-800 mb-4">
               Send Messages Without Revealing Your Identity
             </h1>
             <p className="text-lg text-gray-700 mb-6">
@@ -69,6 +58,18 @@ export default function Landing() {
             >
               {status === 'authenticated' ? 'Go to Dashboard' : 'Start Now'}
             </button>
+          </div>
+
+          {/* Image Section */}
+          <div className="w-full md:w-1/2 flex justify-center">
+            <Image
+              src="/landing-image.png"
+              alt="landing-image"
+              width={450}
+              height={450}
+              className="rounded-xl w-full max-w-[350px] md:max-w-[450px]"
+              priority
+            />
           </div>
         </div>
       </div>
