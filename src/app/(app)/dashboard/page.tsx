@@ -1,5 +1,4 @@
 'use client';
-
 import { useSession, signOut } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
@@ -9,8 +8,6 @@ import { Button } from "@/components/ui/button";
 import { z } from "zod";
 import { messageSchema } from "@/schemas/messageSchema";
 import { toast } from "sonner";
-
-// Define message type
 type Message = z.infer<typeof messageSchema> & { _id: string };
 
 export default function Dashboard() {
@@ -26,7 +23,7 @@ export default function Dashboard() {
     const getMessages = async () => {
       try {
         const res = await axios.get<ApiResponse>("/api/get-messages");
-        setMessages(res.data.messages);
+        setMessages(res.data.messages??[]);
       } catch (err) {
         console.error("Failed to fetch messages", err);
       }
@@ -65,8 +62,6 @@ export default function Dashboard() {
             Logout
           </Button>
         </div>
-
-        {/* Message Cards */}
         <div className="bg-white bg-opacity-60 rounded-xl shadow-md p-6 mb-6">
           <div className="flex items-center justify-between">
             <h2 className="text-xl font-semibold text-gray-800">Your Mystery Messages</h2>
@@ -101,7 +96,6 @@ export default function Dashboard() {
           )}
         </div>
 
-        {/* Copy Link */}
         <div className="bg-white bg-opacity-60 rounded-xl shadow-md p-6 mb-6">
           <h2 className="text-xl font-semibold text-gray-800 mb-2">
             Share Your Message Link

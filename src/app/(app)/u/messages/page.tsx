@@ -26,18 +26,22 @@ const AllMessages = () => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const getAllMessages = async () => {
-      try {
-        const res = await axios.get<ApiResponse>("/api/get-messages");
-        setMessages(res.data.messages);
-      } catch (err) {
-        console.error("Error loading messages", err);
-      } finally {
-        setLoading(false);
-      }
-    };
-    getAllMessages();
-  }, []);
+  const getAllMessages = async () => {
+    try {
+      const res = await axios.get<ApiResponse>("/api/get-messages");
+
+      setMessages(res.data.messages ?? []); 
+
+    } catch (err) {
+      console.error("Error loading messages", err);
+      setMessages([]); 
+    } finally {
+      setLoading(false);
+    }
+  };
+  getAllMessages();
+}, []);
+
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-purple-200 via-pink-100 to-blue-100 p-6">
