@@ -1,5 +1,6 @@
 import dbConnect from "@/lib/dbConnect";
 import UserModel from "@/model/User";
+import { NextResponse } from "next/server";
 
 export async function POST(request: Request) {
   try {
@@ -7,13 +8,17 @@ export async function POST(request: Request) {
 
     const { username, code } = await request.json();
     const decodedUsername = decodeURIComponent(username);
+
     const user = await UserModel.findOne({ username: decodedUsername });
 
     if (!user) {
-      return Response.json({
-        success: false,
-        message: "User not found",
-      }, { status: 400 });
+      return NextResponse.json(
+        {
+          success: false,
+          message: "User not found",
+        },
+        { status: 400 }
+      );
     }
 
     const isCodeValid = user.verifyCode === code;
@@ -23,29 +28,40 @@ export async function POST(request: Request) {
       user.isVerified = true;
       await user.save();
 
-      return Response.json({
-        success: true,
-        message: "User verified successfully",
-      }, { status: 200 });
+      return NextResponse.json(
+        {
+          success: true,
+          message: "User verified successfully",
+        },
+        { status: 200 }
+      );
     }
 
     if (!isCodeValid) {
-      return Response.json({
-        success: false,
-        message: "Verification code is incorrect",
-      }, { status: 400 });
+      return NextResponse.json(
+        {
+          success: false,
+          message: "Verification code is incorrect",
+        },
+        { status: 400 }
+      );
     }
 
-    return Response.json({
-      success: false,
-      message: "Verification code has expired",
-    }, { status: 400 });
-
+    return NextResponse.json(
+      {
+        success: false,
+        message: "Verification code has expired",
+      },
+      { status: 400 }
+    );
   } catch (error) {
     console.error("Error verifying user:", error);
-    return Response.json({
-      success: false,
-      message: "Internal Server Error during verification",
-    }, { status: 500 });
+    return NextResponse.json(
+      {
+        success: false,
+        message: "Internal Server Error during verification",
+      },
+      { status: 500 }
+    );
   }
 }

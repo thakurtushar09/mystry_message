@@ -15,12 +15,15 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import axios from "axios";
 import { toast } from "sonner";
+import { useState } from "react";
 import * as z from "zod";
 import { messageSchema } from "@/schemas/messageSchema";
 
 const SendMessage = () => {
   const params = useParams<{ username: string }>();
   const username = params.username;
+
+  const [loading, setLoading] = useState(false);
 
   const form = useForm<z.infer<typeof messageSchema>>({
     resolver: zodResolver(messageSchema),
@@ -30,18 +33,30 @@ const SendMessage = () => {
   });
 
   const onSubmit = async (data: z.infer<typeof messageSchema>) => {
+    setLoading(true);
     try {
       const res = await axios.post("/api/send-message", {
         username,
         content: data.content,
       });
-      toast.success("Message sent successfully!");
-      form.reset();
-    } catch (err) {
+
+      if (res.data.success) {
+        toast.success(res.data.message || "Message sent!");
+        form.reset();
+      } else {
+        toast.error(res.data.message || "Failed to send.");
+      }
+    } catch (err: any) {
       console.error(err);
-      toast.error("Failed to send message");
+      toast.error("Something went wrong");
+    } finally {
+      setLoading(false);
     }
   };
+
+  if (!username) {
+    return <div className="text-center mt-10 text-red-600">Username not found in URL</div>;
+  }
 
   return (
     <div className="h-screen w-full bg-gradient-to-br from-purple-300 to-green-200 flex items-center justify-center">
@@ -70,8 +85,12 @@ const SendMessage = () => {
               )}
             />
 
-            <Button type="submit" className="bg-emerald-500 hover:bg-emerald-600">
-              Send
+            <Button
+              type="submit"
+              disabled={loading}
+              className="bg-emerald-500 hover:bg-emerald-600 text-white"
+            >
+              {loading ? "Sending..." : "Send"}
             </Button>
           </form>
         </Form>

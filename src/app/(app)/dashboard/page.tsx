@@ -8,12 +8,15 @@ import { Button } from "@/components/ui/button";
 import { z } from "zod";
 import { messageSchema } from "@/schemas/messageSchema";
 import { toast } from "sonner";
+import Switch from "@/components/Switch";
 type Message = z.infer<typeof messageSchema> & { _id: string };
 
 export default function Dashboard() {
   const { data: session, status } = useSession();
   const router = useRouter();
   const [messages, setMessages] = useState<Message[]>([]);
+  const isAcceptingMessages = session?.user?.isAcceptingMessages ?? true;
+
 
   useEffect(() => {
     if (status === "unauthenticated") router.replace("/sign-in");
@@ -123,15 +126,9 @@ export default function Dashboard() {
 
         {/* Profile */}
         <div className="bg-white bg-opacity-60 rounded-xl shadow-md p-6">
-          <h2 className="text-xl font-semibold text-gray-800 mb-2">
-            Your Profile
-          </h2>
-          <p className="text-gray-700">
-            <strong>Username:</strong> {session.user.username} <br />
-            <strong>Email Verified:</strong> {session.user.isVerified ? "Yes" : "No"} <br />
-            <strong>Accepting Messages:</strong>{" "}
-            {session.user.isAcceptingMessages ? "Yes" : "No"}
-          </p>
+          <h1>Are you accepting messages?</h1>
+          <Switch/>
+
         </div>
 
       </div>

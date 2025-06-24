@@ -34,6 +34,7 @@
     "react-hook-form": "^7.57.0",
     "resend": "^4.5.1",
     "sonner": "^2.0.5",
+    "styled-components": "^6.1.19",
     "tailwind-merge": "^3.3.1",
     "usehooks-ts": "^3.1.1",
     "zod": "^3.25.61"
