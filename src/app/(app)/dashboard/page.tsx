@@ -88,9 +88,9 @@ export default function Dashboard() {
                   className={`min-w-[250px] h-[250px] ${cardColors[idx % cardColors.length]} rounded-2xl shadow-lg p-4 flex flex-col justify-between text-gray-800 hover:scale-[1.02] transition-transform`}
                 >
                   <p className="text-md font-medium break-words line-clamp-6">{msg.content}</p>
-                  <p className="text-sm text-gray-600 mt-4">
+                  {/* <p className="text-sm text-gray-600 mt-4">
                     {new Date(msg.createdAt).toLocaleString()}
-                  </p>
+                  </p> */}
                 </div>
               ))}
             </div>
