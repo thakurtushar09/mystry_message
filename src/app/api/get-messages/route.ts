@@ -31,6 +31,8 @@ export async function GET(request: Request) {
       },
     ]);
 
+    
+
     if (!result || result.length === 0) {
       return Response.json(
         { success: true, messages: [] },

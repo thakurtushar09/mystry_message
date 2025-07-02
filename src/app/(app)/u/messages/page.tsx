@@ -9,7 +9,6 @@ import { ApiResponse } from "@/types/ApiResponse";
 import { Button } from "@/components/ui/button";
 import { ArrowLeft } from "lucide-react";
 
-// Type from schema + _id
 type Message = z.infer<typeof messageSchema> & { _id: string };
 
 const cardColors = [
@@ -29,7 +28,7 @@ const AllMessages = () => {
   const getAllMessages = async () => {
     try {
       const res = await axios.get<ApiResponse>("/api/get-messages");
-
+      console.log("this is data",res.data);
       setMessages(res.data.messages ?? []); 
 
     } catch (err) {
