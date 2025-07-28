@@ -35,6 +35,8 @@ const SendMessage = () => {
 
 
   const onSubmit = async (data: z.infer<typeof messageSchema>) => {
+    console.log("form submitted");
+    
     setLoading(true);
     try {
       const response = await axios.post("/api/send-message", {
